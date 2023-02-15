@@ -1,0 +1,139 @@
+name: +1 Shortbow
+automation:
+  - type: variable
+    name: baseHit
+    value: dexterityMod+proficiencyBonus+1
+  - type: variable
+    name: baseDamage
+    value: dexterityMod+1
+  - type: condition
+    condition: choice.lower() == 'magefire'
+    onTrue:
+      - type: counter
+        counter: Magefire Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: each
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6+{baseDamage}[magical piercing]+1d6[fire]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: text
+        text: >-
+          **Magefire Arrows.** Fire arrows that magically ignite once fired. Deals
+          1d6 extra fire damage and ignites non-worn, non-carried flammable
+          materials.
+
+
+          *Destroyed on use.*
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice.lower() == 'blinding'
+    onTrue:
+      - type: counter
+        counter: Blinding Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: 1
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6+{baseDamage}[magical bludgeoning]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: lastAttackDidHit
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used Blinding Arrow.
+                duration: "1"
+                save_as: blindingArrowParent
+          - type: target
+            target: all
+            effects:
+              - type: save
+                stat: con
+                fail:
+                  - type: ieffect2
+                    name: Blinded.
+                    effects:
+                      attack_advantage: "-1"
+                    desc: >-
+                      Hit with a Blinding Arrow.
+                       - A blinded creature can't see and automatically fails any ability check that requires sight.
+                       - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                    parent: blindingArrowParent
+                success: []
+                dc: 8+dexterityMod+proficiencyBonus
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Blinding Arrows.** A clay arrowhead filled with a powder that flashes
+          brightly on impact. Deals bludgeoning damage and causes creatures
+          within 5ft of impact to make a Constitution saving throw against your
+          DC {8 + proficiencyBonus + dexterityMod}, being blinded for one round
+          on a failed save.
+
+
+          *Destroyed on use.*
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice.lower() == 'rope'
+    onTrue:
+      - type: counter
+        counter: Rope Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: text
+        text: |-
+          **Rope Arrows.**A 25ft. section of rope is attached to each arrow.
+
+
+          *(Not recoverable).*
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice == "" or choice.lower() not in 'magefire rope blinding'
+    onTrue:
+      - type: counter
+        counter: Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: each
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6+{baseDamage}[magical piercing]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: counter
+        counter: Used Arrows
+        amount: "-1"
+        allowOverflow: true
+        errorBehaviour: warn
+      - type: text
+        text: ""
+    onFalse: []
+    errorBehaviour: "true"
+_v: 2

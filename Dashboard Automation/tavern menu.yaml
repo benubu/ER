@@ -1,0 +1,92 @@
+---
+- fancyName: Toast with Sliced Beets (free)
+  name: toast-with-sliced-beets
+  type: Breakfast
+  cost: '0'
+  coinType: cp
+  intox: "-1"
+  desc: Toast with Sliced Beets
+- fancyName: Roasted Potatoes
+  name: roasted-potatoes
+  type: Breakfast
+  cost: "-3"
+  coinType: cp
+  intox: "-1"
+  desc: Roasted Potatoes
+- fancyName: Chevre Omelete
+  name: chevre-omelete
+  type: Breakfast
+  cost: "-1"
+  coinType: sp
+  intox: "-1"
+  desc: Omelete with Goat's Milk Cheese
+- fancyName: Squirrel Rarebit
+  name: squirrel-rarebit
+  type: Breakfast
+  cost: "-5"
+  coinType: cp
+  intox: "-2"
+  desc: Squirrel and Cheese on Toast
+- fancyName: Pickled Whitefish
+  name: pickled-whitefish
+  type: Breakfast
+  cost: "-5"
+  coinType: cp
+  intox: "-2"
+  desc: Pickled Whitefish with a chip of toast
+- fancyName: Hot Beet Soup with Toast (free)
+  name: hot-beet-soup-with-toast
+  type: Lunch and Dinner
+  cost: '0'
+  coinType: cp
+  intox: "-1"
+  desc: Thin turnip stew with chunks of stringy squirrel meat
+- fancyName: Turnip and Squirrel Stew
+  name: turnip-and-squirrel-stew
+  type: Lunch and Dinner
+  cost: "-2"
+  coinType: cp
+  intox: "-1"
+  desc: Thin turnip stew with chunks of stringy squirrel meat
+- fancyName: Grilled Fish with Pickled Beets
+  name: grilled-fish-with-pickled-beets
+  type: Lunch and Dinner
+  cost: "-1"
+  coinType: sp
+  intox: "-1"
+  desc: Grilled Fish from the Lake with Pickled Beets
+- fancyName: Hunter's Steak with Sauerkraut
+  name: hunteres-steak-with-sauerkraut
+  type: Lunch and Dinner
+  cost: "-1"
+  coinType: ep
+  intox: "-2"
+  desc: Hunter's (Wolf) Steak with Sauerkraut
+- fancyName: Rabbit and Potato Platter
+  name: rabbit-and-potato-platter
+  type: Lunch and Dinner
+  cost: "-2"
+  coinType: sp
+  intox: "-2"
+  desc: Roasted rabbit with roasted potatoes
+- fancyName: Pint of Purple Grapesmash no. 3
+  name: pint-of-purple-grapesmash-no-3
+  type: Drinks
+  cost: "-1"
+  coinType: cp
+  intox: "+1"
+  desc: The cheap stuff
+- fancyName: Pint of Red Dragon Crush
+  name: pint-of-red-dragon-crush
+  type: Drinks
+  cost: "-1"
+  coinType: sp
+  intox: "+2"
+  desc: The not-so-cheap stuff
+- fancyName: Beet Moonshine
+  name: beet-moonshine
+  type: Drinks
+  cost: "-2"
+  coinType: cp
+  intox: "+4"
+  desc: Beet moonshine. 'nuff said.
