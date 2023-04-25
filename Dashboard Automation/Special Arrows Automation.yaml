@@ -35,6 +35,234 @@ automation:
     onFalse: []
     errorBehaviour: "false"
   - type: condition
+    condition: choice.lower() == 'ice'
+    onTrue:
+      - type: counter
+        counter: Ice Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: 1
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6+{baseDamage}[magical cold]
+                overheal: false
+              - type: save
+                stat: con
+                fail: []
+                success: []
+                dc: 8+dexterityMod+proficiencyBonus
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: not lastSaveDidPass
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used Ice Arrow.
+                duration: "1"
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: null
+                stacking: false
+                save_as: iceArrowParent
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: ieffect2
+                    name: Frozen.
+                    duration: null
+                    effects:
+                      attack_advantage: "-1"
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
+                    desc: >-
+                      Hit with a Blinding Arrow.
+                       - A blinded creature can't see and automatically fails any ability check that requires sight.
+                       - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                    stacking: false
+                    save_as: null
+                    parent: iceArrowParent
+                dc: 8+dexterityMod+proficiencyBonus
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Blinding Arrows.** A clay arrowhead filled with a powder that flashes
+          brightly on impact. Deals bludgeoning damage and causes creatures
+          within 5ft of impact to make a Constitution saving throw against your
+          DC {8 + proficiencyBonus + dexterityMod}, being blinded for one round
+          on a failed save.
+
+
+          *Destroyed on use.*
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice.lower() == 'Mind Piercer'
+    onTrue:
+      - type: counter
+        counter: Mind Piercer Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: 1
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6+{baseDamage}[magical psychic]
+                overheal: false
+              - type: save
+                stat: con
+                fail: []
+                success: []
+                dc: 8+dexterityMod+proficiencyBonus
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: not lastSaveDidPass
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used Mind Piercer Arrow.
+                duration: "1"
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: null
+                stacking: false
+                save_as: mindpiercerArrowParent
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: ieffect2
+                    name: Hit by Mind Piercer.
+                    duration: null
+                    effects:
+                      attack_advantage: "-1"
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
+                    desc: >-
+                      Hit with a Blinding Arrow.
+                       - A blinded creature can't see and automatically fails any ability check that requires sight.
+                       - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                    stacking: false
+                    save_as: null
+                    parent: mindpiercerArrowParent
+                dc: 8+dexterityMod+proficiencyBonus
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Blinding Arrows.** A clay arrowhead filled with a powder that flashes
+          brightly on impact. Deals bludgeoning damage and causes creatures
+          within 5ft of impact to make a Constitution saving throw against your
+          DC {8 + proficiencyBonus + dexterityMod}, being blinded for one round
+          on a failed save.
+
+
+          *Destroyed on use.*
+    onFalse: []
+    errorBehaviour: "false"
+    
+    
+  - type: condition
+    condition: choice.lower() == 'glue'
+    onTrue:
+      - type: counter
+        counter: Glue Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: 1
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6+{baseDamage}[magical bludgeoning]
+                overheal: false
+              - type: save
+                stat: con
+                fail: []
+                success: []
+                dc: 8+dexterityMod+proficiencyBonus
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: not lastSaveDidPass
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used Glue Arrow.
+                duration: "1"
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: null
+                stacking: false
+                save_as: glueArrowParent
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: ieffect2
+                    name: Hit by Glue Arrow.
+                    duration: null
+                    effects:
+                      attack_advantage: "-1"
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
+                    desc: >-
+                      Hit with a Blinding Arrow.
+                       - A blinded creature can't see and automatically fails any ability check that requires sight.
+                       - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                    stacking: false
+                    save_as: null
+                    parent: glueArrowParent
+                dc: 8+dexterityMod+proficiencyBonus
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Blinding Arrows.** A clay arrowhead filled with a powder that flashes
+          brightly on impact. Deals bludgeoning damage and causes creatures
+          within 5ft of impact to make a Constitution saving throw against your
+          DC {8 + proficiencyBonus + dexterityMod}, being blinded for one round
+          on a failed save.
+
+
+          *Destroyed on use.*
+    onFalse: []
+    errorBehaviour: "false"
+    
+  - type: condition
     condition: choice.lower() == 'blinding'
     onTrue:
       - type: counter
@@ -50,10 +278,15 @@ automation:
               - type: damage
                 damage: 1d6+{baseDamage}[magical bludgeoning]
                 overheal: false
+              - type: save
+                stat: con
+                fail: []
+                success: []
+                dc: 8+dexterityMod+proficiencyBonus
             miss: []
             attackBonus: baseHit
       - type: condition
-        condition: lastAttackDidHit
+        condition: not lastSaveDidPass
         onTrue:
           - type: target
             target: self
@@ -61,23 +294,34 @@ automation:
               - type: ieffect2
                 name: Used Blinding Arrow.
                 duration: "1"
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: null
+                stacking: false
                 save_as: blindingArrowParent
+                parent: null
           - type: target
             target: all
             effects:
-              - type: save
-                stat: con
-                fail:
-                  - type: ieffect2
+              - type: ieffect2
                     name: Blinded.
+                    duration: null
                     effects:
                       attack_advantage: "-1"
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
                     desc: >-
                       Hit with a Blinding Arrow.
                        - A blinded creature can't see and automatically fails any ability check that requires sight.
                        - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                    stacking: false
+                    save_as: null
                     parent: blindingArrowParent
-                success: []
                 dc: 8+dexterityMod+proficiencyBonus
         onFalse: []
         errorBehaviour: "false"
@@ -110,7 +354,45 @@ automation:
     onFalse: []
     errorBehaviour: "false"
   - type: condition
-    condition: choice == "" or choice.lower() not in 'magefire rope blinding'
+    condition: choice.lower() == 'smoking'
+    onTrue:
+      - type: counter
+        counter: Smoking Arrows
+        amount: "1"
+        errorBehaviour: raise
+      - type: target
+        target: self
+        effects:
+          - type: ieffect2
+            name: Used Smoke Arrow
+            duration: "61"
+            end: true
+            buttons:
+              - label: Dissipate Smoke
+                automation:
+                  - type: remove_ieffect
+                style: "1"
+            stacking: true
+      - type: text
+        text: >-
+          **Smoking Arrows.** Arrows with a small clay head with an opening inside,
+          containing a reactive chemical. On hit, the chemical releases smoke in
+          a 10ft sphere, heavily obscuring vision in that area. The smoke lasts
+          for 10 rounds, unless removed by a strong wind.
+
+
+          *Destroyed on use.*
+
+
+          **To apply a map overlay:**
+
+          `!se 'smoking arrow' <coordinates>`
+
+
+          **Heavily Obscured.** A heavily obscured area blocks vision entirely. A creature effectively suffers from the blinded condition when trying to see something in that area.
+    onFalse: []
+  - type: condition
+    condition: choice == "" or choice.lower() not in 'magefire rope blinding smoking'
     onTrue:
       - type: counter
         counter: Arrows
