@@ -1,20 +1,23 @@
 # Expanded Arrows
 Questions? @BN on Enter Ravenloft.
 
-[Enter Ravenloft Expanded Arrows](https://drive.google.com/file/d/1wwtqeXpVPMYdraSLVZFhdaF62ybvbZNH/view)*PDF on Google Drive*
+[Enter Ravenloft Expanded Arrows](https://drive.google.com/file/d/1wwtqeXpVPMYdraSLVZFhdaF62ybvbZNH/view) *Links PDF on Google Drive*
 
 Ammunition tracking is done via Custom Counters (CCs).
 
-For each ammunition type has a matching CC. For example, the Magefire automation uses a CC called "Magefire Arrow"
+For each ammunition type has a matching CC. For example, the Magefire automation uses a CC called `Magefire Arrow`
 
 Add this CC with this command:
-`!cc create "Magefire Arrow" -min 0 -reset none`
+
+```!cc create "Magefire Arrow" -min 0 -reset none```
 (a CC named Magefire Arrow that can't go below zero, has no maximum value, and doesn't reset on rests)
 
 For regular arrows, or any arrows that are recoverable, you need to track how many are used, not just remaining. This will work with the `!collect` alias to recover half after an encounter. 
-`!cc create "Arrows" -min 0 -reset none`
+
+```!cc create "Arrows" -min 0 -reset none```
 (👆 tracking arrows remaining)
-`!cc create "Used Arrows" -min 0 -reset none`
+
+```!cc create "Used Arrows" -min 0 -reset none```
 (👆 tracking arrows used and can potentially be recovered)
 
 Want to add a bunch at once? Copy/paste the following, but editing to the arrows you actually have and edit the amounts for starting quantities. The list below is all the ones my character BJ has so far.
