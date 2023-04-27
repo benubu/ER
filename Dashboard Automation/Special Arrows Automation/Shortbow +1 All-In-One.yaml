@@ -1,0 +1,459 @@
+name: +1 Shortbow
+automation:
+  - type: variable
+    name: baseHit
+    value: (dexterityMod+proficiencyBonus) + 1
+  - type: variable
+    name: damageBonus
+    value: (dexterityMod) + 1
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: condition
+    condition: not choice or choice == "" or choice == " " or choice.lower() not in
+      "healing magefire rope blind blinding smoke smoking ice mind piercer mind
+      piercing glue"
+    onTrue:
+      - type: counter
+        counter: Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: each
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [magical piercing]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: counter
+        counter: Used Arrows
+        amount: "-1"
+        allowOverflow: true
+        errorBehaviour: warn
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "magefire"
+    onTrue:
+      - type: counter
+        counter: Magefire Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: all
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [magical piercing] + 1d6 [fire]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: text
+        text: >-
+          **Magefire Arrows.** Fire arrows that magically ignite once fired. Deals
+          1d6 extra fire damage and ignites non-worn, non-carried flammable
+          materials.
+
+
+          *Destroyed on use.*
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "blinding blind"
+    onTrue:
+      - type: counter
+        counter: Blinding Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: 1
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [magical bludgeoning]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: lastAttackDidHit
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used blinding arrow
+                duration: "1"
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: null
+                stacking: false
+                save_as: parentBlindingArrow
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: save
+                stat: con
+                fail:
+                  - type: ieffect2
+                    name: Blinded by arrow
+                    duration: null
+                    effects:
+                      attack_advantage: "-1"
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
+                    desc: >-
+                      Blinded by blinding arrow.
+                       - A blinded creature can't see and automatically fails any ability check that requires sight.
+                       - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                    stacking: false
+                    save_as: null
+                    parent: parentBlindingArrow
+                success: []
+                dc: arrowDC
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Blinding Arrow.** A clay arrowhead filled with a powder that flashes
+          brightly on impact. Deals bludgeoning damage and causes creatures
+          within 5ft of impact to make a Constitution saving throw against your
+          Arrow DC ({arrowDC}), being blinded for one round on a failed save.
+
+
+          *Destroyed on use.*
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "glue"
+    onTrue:
+      - type: counter
+        counter: Glue Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: each
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [Bludgeoning]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: lastAttackDidHit
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used glue arrow
+                duration: "2"
+                effects: null
+                attacks: []
+                buttons: []
+                end: true
+                conc: false
+                desc: null
+                stacking: false
+                save_as: parentGlueArrow
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: save
+                stat: dex
+                fail:
+                  - type: ieffect2
+                    name: Hit by glue arrow
+                    effects:
+                      save_dis:
+                        - str
+                        - dex
+                    parent: parentGlueArrow
+                    desc: >-
+                      Covered in sticky glue!
+                       - Has disadvantage on Strength and Dexterity saving throws until the end of {name}'s next turn.
+                success: []
+                dc: arrowDC
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Glue Arrow.** This arrow is tipped with a clay pot and deals bludgeoning
+          damage. On hit, the pot ruptures, covering the target in a sticky
+          substance. The target must make a Dexterity saving throw equal to your
+          Arrow DC ({arrowDC}), on a failure they have disadvantage on Strength
+          and Dexterity saving throws until the end of your next turn.
+
+
+          *Destroyed on use.*
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "ice"
+    onTrue:
+      - type: counter
+        counter: Ice Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: all
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [cold]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: text
+        text: "**Ice Arrow.** These arrows are cold to the touch. On hit, the target
+          takes Cold damage and must pass a Constitution saving throw against
+          your Arrow DC or suffer -10ft to their movement speed."
+        title: Effect
+      - type: condition
+        condition: lastAttackDidHit
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used Ice Arrow.
+                duration: "2"
+                effects: null
+                attacks: []
+                buttons: []
+                end: true
+                conc: false
+                desc: Used Ice Arrow. Target has -10 feet to movement until the end of your next
+                  turn.
+                stacking: true
+                save_as: parentIceArrow
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: save
+                stat: con
+                fail:
+                  - type: ieffect2
+                    name: Slowed by Ice Arrow
+                    duration: null
+                    effects: null
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
+                    desc: Hit by Ice Arrow.  Movement is reduced by 10 feet until the end of
+                      {name}'s next turn.
+                    stacking: true
+                    save_as: null
+                    parent: parentIceArrow
+                success: []
+                dc: arrowDC
+        onFalse: []
+        errorBehaviour: "false"
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "mind piercer mind piercing"
+    onTrue:
+      - type: counter
+        counter: Mind Piercer Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: all
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [psychic]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: condition
+        condition: lastAttackDidHit
+        onTrue:
+          - type: target
+            target: self
+            effects:
+              - type: ieffect2
+                name: Used mind piercer arrow
+                duration: "1"
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: null
+                stacking: false
+                save_as: parentMindPiercer
+                parent: null
+          - type: target
+            target: all
+            effects:
+              - type: save
+                stat: int
+                fail:
+                  - type: ieffect2
+                    name: Hit by mind piercer arrow
+                    duration: null
+                    effects:
+                      save_bonus: -1d4[mind piercer]
+                    attacks: []
+                    buttons:
+                      - label: Remove mind piercer
+                        automation:
+                          - type: remove_ieffect
+                        verb: null
+                        style: "1"
+                        defaultDC: null
+                        defaultAttackBonus: null
+                        defaultCastingMod: null
+                    end: false
+                    conc: false
+                    desc: "- Mind piercer arrow.  Subtract 1d4 from next saving throw that they make
+                      before {name}'s next turn."
+                    stacking: false
+                    save_as: null
+                    parent: parentMindPiercer
+                success: []
+                dc: arrowDC
+        onFalse: []
+        errorBehaviour: "false"
+      - type: text
+        text: >-
+          **Mind Piercer Arrow.** On hit, the arrow deals Psychic damage and the
+          target makes an Intelligence saving throw against your Arrow DC
+          ({arrowDC}). On a failure the target subtracts 1d4 from their next
+          saving throw that they make before your next turn.
+
+
+          *Destroyed on use.*
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "rope"
+    onTrue:
+      - type: counter
+        counter: Rope Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: roll
+        dice: 1d20+{baseHit}
+        name: Attack Roll
+        hidden: false
+      - type: text
+        text: |-
+          **Rope Arrow.** A 25ft. section of rope is attached to each arrow.
+
+          *Destroyed on use.*
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "smoke smoking"
+    onTrue:
+      - type: counter
+        counter: Smoking Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: all
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [magical bludgeoning]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: target
+        target: self
+        effects:
+          - type: ieffect2
+            name: Used smoking arrow
+            duration: "6"
+            effects: null
+            attacks: []
+            buttons: []
+            end: false
+            conc: false
+            desc: null
+            stacking: false
+            save_as: null
+            parent: null
+      - type: text
+        text: >-
+          **Smoking Arrows.** Arrows with a small clay head with an opening inside,
+          containing a reactive chemical. On hit, the chemical releases smoke in
+          a 10ft sphere, heavily obscuring vision in that area. The smoke lasts
+          for 10 rounds, unless removed by a strong wind.
+
+
+          *Destroyed on use.*
+
+
+          Overlay: `!se "smoking arrow" [coordinates]`
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "heal"
+    onTrue:
+      - type: counter
+        counter: Healing Arrows
+        amount: "1"
+        allowOverflow: false
+        errorBehaviour: raise
+      - type: target
+        target: each
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: -(2d4+2)[magical heal]
+                overheal: false
+            miss: []
+            attackBonus: baseHit
+      - type: text
+        text: >-
+          **Healing Arrow.**This magic ammunition is made by the elder clerics of
+          nature and hunting deities. An attack made with this ammunition deals
+          no damage to any target hit by it.
+
+
+          When you hit a creature other than yourself with this ammunition, that creature regains hit points equal to 2d4 + 2, If the target is a friendly creature, you have advantage on the attack. Once it hits a creature, this ammunition dissolves into pure healing magic before it’s destroyed. This ammunition has no effect on undead or constructs.
+
+
+          *Destroyed upon use.*
+        title: Effect
+    onFalse: []
+    errorBehaviour: "false"
+_v: 2
+activation_type: 2

@@ -1,0 +1,80 @@
+#Glue Arrows
+#Ammunition, common
+#50 gp, 1 lb.
+#Damage: Bludgeoning
+#Description
+#This arrow is tipped with a clay pot and deals bludgeoning damage. On hit, the pot ruptures, covering the target in a sticky substance. The target must make a Dexterity saving throw equal to your Arrow DC, on a failure they have disadvantage on Strength and Dexterity saving throws until the end of your next turn.
+#
+#Arrow DC:
+#8 + Proficiency Bonus + Ability modifier used to make the attack roll
+
+name: Glue Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Glue Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: each
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical bludgeoning]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: condition
+    condition: lastAttackDidHit
+    onTrue:
+      - type: target
+        target: self
+        effects:
+          - type: ieffect2
+            name: Used glue arrow
+            duration: "2"
+            effects: null
+            attacks: []
+            buttons: []
+            end: true
+            conc: false
+            desc: null
+            stacking: false
+            save_as: parentGlueArrow
+            parent: null
+      - type: target
+        target: all
+        effects:
+          - type: save
+            stat: dex
+            fail:
+              - type: ieffect2
+                name: Hit by glue arrow
+                effects:
+                  save_dis:
+                    - str
+                    - dex
+                parent: parentGlueArrow
+                desc: >-
+                  Covered in sticky glue!
+                   - Has disadvantage on Strength and Dexterity saving throws until the end of {name}'s next turn.
+            success: []
+            dc: arrowDC
+    onFalse: []
+    errorBehaviour: "false"
+  - type: text
+    text: >-
+      **Glue Arrow.** This arrow is tipped with a clay pot and deals bludgeoning
+      damage. On hit, the pot ruptures, covering the target in a sticky
+      substance. The target must make a Dexterity saving throw equal to your
+      Arrow DC ({arrowDC}), on a failure they have disadvantage on Strength
+      and Dexterity saving throws until the end of your next turn.
+
+
+      *Destroyed on use.*
+    title: Effect
+_v: 2

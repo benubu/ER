@@ -1,0 +1,40 @@
+#Healing Arrows
+#Ammunition, common
+#200 gp, 1 lb.
+#Bundle: 1
+#Damage: Heal
+#Description
+#This magic ammunition is made by the elder clerics of nature and hunting deities. An attack made with this ammunition deals no damage to any target hit by it.
+#
+#When you hit a creature other than yourself with this ammunition, that creature regains hit points equal to 2d4 + 2, If the target is a friendly creature, you have advantage on the attack. Once it hits a creature, this ammunition dissolves into pure healing magic before it’s destroyed. This ammunition has no effect on undead or constructs.
+
+name: Healing Arrow
+automation:
+  - type: counter
+    counter: Healing Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: each
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: -(2d4+2)[magical heal]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: text
+    text: >-
+      **Healing Arrow.**This magic ammunition is made by the elder clerics of
+      nature and hunting deities. An attack made with this ammunition deals
+      no damage to any target hit by it.
+
+
+      When you hit a creature other than yourself with this ammunition, that creature regains hit points equal to 2d4 + 2, If the target is a friendly creature, you have advantage on the attack. Once it hits a creature, this ammunition dissolves into pure healing magic before it’s destroyed. This ammunition has no effect on undead or constructs.
+
+
+      *Destroyed upon use.*
+    title: Effect
+_v: 2

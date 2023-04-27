@@ -1,0 +1,91 @@
+#Mind Piercers
+#Ammunition, common
+#50 gp, 1 lb.
+#Damage: Psychic
+#Description
+#On hit, the arrow deals Psychic damage and the target makes an Intelligence saving throw against your Arrow DC. On a failure the target subtracts 1d4 from their next saving throw that they make before your next turn.
+#
+#Arrow DC:
+#8 + Proficiency Bonus + Ability modifier used to make the attack roll
+
+name: Mind Piercer Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Mind Piercer Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: all
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [psychic]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: condition
+    condition: lastAttackDidHit
+    onTrue:
+      - type: target
+        target: self
+        effects:
+          - type: ieffect2
+            name: Used mind piercer arrow
+            duration: "1"
+            effects: null
+            attacks: []
+            buttons: []
+            end: false
+            conc: false
+            desc: null
+            stacking: false
+            save_as: parentMindPiercer
+            parent: null
+      - type: target
+        target: all
+        effects:
+          - type: save
+            stat: int
+            fail:
+              - type: ieffect2
+                name: Hit by mind piercer arrow
+                duration: null
+                effects:
+                  save_bonus: -1d4[mind piercer]
+                attacks: []
+                buttons:
+                  - label: Remove mind piercer
+                    automation:
+                      - type: remove_ieffect
+                    verb: null
+                    style: "1"
+                    defaultDC: null
+                    defaultAttackBonus: null
+                    defaultCastingMod: null
+                end: false
+                conc: false
+                desc: "- Mind piercer arrow.  Subtract 1d4 from next saving throw that they make
+                  before {name}'s next turn."
+                stacking: false
+                save_as: null
+                parent: parentMindPiercer
+            success: []
+            dc: arrowDC
+    onFalse: []
+    errorBehaviour: "false"
+  - type: text
+    text: >-
+      **Mind Piercer Arrow.** On hit, the arrow deals Psychic damage and the
+      target makes an Intelligence saving throw against your Arrow DC
+      ({arrowDC}). On a failure the target subtracts 1d4 from their next
+      saving throw that they make before your next turn.
+
+
+      *Destroyed on use.*
+    title: Effect
+_v: 2

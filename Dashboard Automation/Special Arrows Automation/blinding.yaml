@@ -1,0 +1,86 @@
+#Blinding Arrows
+#Ammunition, common
+#10 gp, 0.1 lb.
+#Damage: Base (Bludgeoning)
+#Description
+#A clay arrowhead filled with a powder that flashes brightly on impact. Deals bludgeoning damage and causes creatures within 5ft of impact to make a Constitution saving throw against your Arrow DC, being blinded for one round on a failed save.
+
+#Arrow DC:
+#8 + Proficiency Bonus + Ability modifier used to make the attack roll
+
+name: Blinding Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+
+  - type: counter
+    counter: Blinding Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: 1
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical bludgeoning]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: condition
+    condition: lastAttackDidHit
+    onTrue:
+      - type: target
+        target: self
+        effects:
+          - type: ieffect2
+            name: Used blinding arrow
+            duration: "1"
+            effects: null
+            attacks: []
+            buttons: []
+            end: false
+            conc: false
+            desc: null
+            stacking: false
+            save_as: parentBlindingArrow
+            parent: null
+      - type: target
+        target: all
+        effects:
+          - type: save
+            stat: con
+            fail:
+              - type: ieffect2
+                name: Blinded by arrow
+                duration: null
+                effects:
+                  attack_advantage: "-1"
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: >-
+                  Blinded by blinding arrow.
+                   - A blinded creature can't see and automatically fails any ability check that requires sight.
+                   - Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.
+                stacking: false
+                save_as: null
+                parent: parentBlindingArrow
+            success: []
+            dc: arrowDC
+    onFalse: []
+    errorBehaviour: "false"
+  - type: text
+    text: >-
+      **Blinding Arrow.** A clay arrowhead filled with a powder that flashes
+      brightly on impact. Deals bludgeoning damage and causes creatures
+      within 5ft of impact to make a Constitution saving throw against your
+      Arrow DC ({arrowDC}), being blinded for one round on a failed save.
+
+
+      *Destroyed on use.*
+    title: Effect
+_v: 2

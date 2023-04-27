@@ -1,0 +1,78 @@
+#Ice Arrows
+#Ammunition, common
+#50 gp, 0.1 lb.
+#Damage: Base (Cold)
+#Description
+#These arrows are cold to the touch. On hit, the target takes Cold damage and must pass a Constitution saving throw against your Arrow DC or suffer -10ft to their movement speed until the end of your next turn.
+#
+#Arrow DC:
+#8 + Proficiency Bonus + Ability modifier used to make the attack roll
+
+name: Ice Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Ice Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: all
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [cold]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: text
+    text: "**Ice Arrow.** These arrows are cold to the touch. On hit, the target
+      takes Cold damage and must pass a Constitution saving throw against
+      your Arrow DC or suffer -10ft to their movement speed."
+    title: Effect
+  - type: condition
+    condition: lastAttackDidHit
+    onTrue:
+      - type: target
+        target: self
+        effects:
+          - type: ieffect2
+            name: Used Ice Arrow.
+            duration: "2"
+            effects: null
+            attacks: []
+            buttons: []
+            end: true
+            conc: false
+            desc: Used Ice Arrow. Target has -10 feet to movement until the end of your next
+              turn.
+            stacking: true
+            save_as: parentIceArrow
+            parent: null
+      - type: target
+        target: all
+        effects:
+          - type: save
+            stat: con
+            fail:
+              - type: ieffect2
+                name: Slowed by Ice Arrow
+                duration: null
+                effects: null
+                attacks: []
+                buttons: []
+                end: false
+                conc: false
+                desc: Hit by Ice Arrow.  Movement is reduced by 10 feet until the end of
+                  {name}'s next turn.
+                stacking: true
+                save_as: null
+                parent: parentIceArrow
+            success: []
+            dc: arrowDC
+    onFalse: []
+    errorBehaviour: "false"
+_v: 2

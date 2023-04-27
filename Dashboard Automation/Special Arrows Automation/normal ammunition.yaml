@@ -1,0 +1,25 @@
+# Shortbow +1 with normal ammunition
+
+name: Shortbow +1
+automation:
+  - type: counter
+    counter: Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: each
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical piercing]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: counter
+    counter: Used Arrows
+    amount: "-1"
+    allowOverflow: true
+    errorBehaviour: warn
+_v: 2

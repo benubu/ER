@@ -1,0 +1,34 @@
+#Magefire Arrows
+#Ammunition, common
+#25 gp, 0.1 lb.
+#Damage: Base (Magical Piercing) + 1d6 Magical Fire
+#Description
+#Fire arrows that magically ignite once fired. Deals 1d6 extra fire damage and ignites non-worn, non-carried flammable materials.
+
+name: Magefire Arrow
+automation:
+  - type: counter
+    counter: Magefire Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: all
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical piercing] + 1d6 [fire]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: text
+    text: >-
+      **Magefire Arrows.** Fire arrows that magically ignite once fired. Deals
+      1d6 extra fire damage and ignites non-worn, non-carried flammable
+      materials.
+
+
+      *Destroyed on use.*
+    title: Effect
+_v: 2

@@ -1,0 +1,53 @@
+#Smoking Arrows
+#Ammunition, common
+#10 gp, 0.1 lb
+#Damage: Base (Bludgeoning)
+#Description
+#Arrows with a small clay head with an opening inside, containing a reactive chemical. On hit, the chemical releases smoke in a 10ft sphere, heavily obscuring vision in that area. #The smoke lasts for 10 rounds, unless removed by a strong wind.
+
+name: Smoking Arrow
+automation:
+  - type: counter
+    counter: Smoking Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: target
+    target: all
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical bludgeoning]
+            overheal: false
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: target
+    target: self
+    effects:
+      - type: ieffect2
+        name: Used smoking arrow
+        duration: "6"
+        effects: null
+        attacks: []
+        buttons: []
+        end: false
+        conc: false
+        desc: null
+        stacking: false
+        save_as: null
+        parent: null
+  - type: text
+    text: >-
+      **Smoking Arrows.** Arrows with a small clay head with an opening inside,
+      containing a reactive chemical. On hit, the chemical releases smoke in
+      a 10ft sphere, heavily obscuring vision in that area. The smoke lasts
+      for 10 rounds, unless removed by a strong wind.
+
+
+      *Destroyed on use.*
+
+
+      Overlay: `!se "smoking arrow" [coordinates]`
+    title: Effect
+_v: 2

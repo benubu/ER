@@ -1,0 +1,25 @@
+#Rope Arrows
+#Ammunition, common
+#3 gp, 0.1 lb.
+#Damage: None
+#Description
+#A 25ft. section of rope is attached to each arrow.
+
+name: Rope Arrow
+automation:
+  - type: counter
+    counter: Rope Arrows
+    amount: "1"
+    allowOverflow: false
+    errorBehaviour: raise
+  - type: roll
+    dice: 1d20+{(dexterityMod+proficiencyBonus) + 1}
+    name: Attack Roll
+    hidden: false
+  - type: text
+    text: |-
+      **Rope Arrow.** A 25ft. section of rope is attached to each arrow.
+
+      *Destroyed on use.*
+    title: Effect
+_v: 2
