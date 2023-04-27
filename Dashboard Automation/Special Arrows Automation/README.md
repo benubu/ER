@@ -15,10 +15,10 @@ Add this CC with this command:
 For regular arrows, or any arrows that are recoverable, you need to track how many are used, not just remaining. This will work with the `!collect` alias to recover half after an encounter. 
 
 ```!cc create "Arrows" -min 0 -reset none```
-(👆 tracking arrows remaining)
+(tracking arrows remaining)
 
 ```!cc create "Used Arrows" -min 0 -reset none```
-(👆 tracking arrows used and can potentially be recovered)
+(tracking arrows used and can potentially be recovered)
 
 Want to add a bunch at once? Copy/paste the following, but editing to the arrows you actually have and edit the amounts for starting quantities. The list below is all the ones my character BJ has so far.
 ```
