@@ -1,0 +1,45 @@
+#Acid Arrows
+#Ammunition, common
+#50 gp, 1 lb.
+#Damage: Acid
+#Description
+#On hit Acid splashes from a capsule that shatters on impact. The target must make a Constitution saving throw against your Arrow DC or have their AC reduced by 2.
+
+
+name: Acid Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Acid Arrows
+    amount: "1"
+    errorBehaviour: raise
+  - type: target
+    target: all
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical piercing] + 1d6 [acid]
+          - type: save
+            stat: con
+            fail:
+              - type: ieffect2
+                name: Damaged Armor [Acid Arrow]
+                stacking: true
+                effects:
+                  ac_bonus: "-2"
+            success: []
+            dc: arrowDC
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: text
+    text: >-
+      **Acid Arrows.** On hit Acid splashes from a capsule that shatters on
+      impact. The target must make a Constitution saving throw against your
+      Arrow DC (DC {{arrowDC}}) or have their AC reduced by 2.
+
+
+      *Destroyed on use.*
+_v: 2

@@ -33,6 +33,10 @@ Want to add a bunch at once? Copy/paste the following, but editing to the arrows
 !cc create "Rope Arrows" -min 0 -reset none -value 10
 !cc create "Smoking Arrows" -min 0 -reset none -value 10
 !cc create "Healing Arrows" -min 0 -reset none -value 10
+!cc create "Explosive Arrows" -min 0 -reset none -value 10
+!cc create "Thunderclap Arrows" -min 0 -reset none -value 10
+!cc create "Holy Arrows" -min 0 -reset none -value 10
+!cc create "Acid Arrows" -min 0 -reset none -value 10
 ```
 
 TIP: Use the `!hud` alias for a much more user friendly to check how many arrows you have on hand. Much cleaner than `!cc` !
@@ -67,6 +71,10 @@ Many of these are too large to import directly into discord. Instead, to to the 
 - Rope Arrows
 - Smoking Arrows
 - Healing Arrows
+- Explosive Arrows
+- Acid Arrows
+- Thundering Arrows
+- Holy Arrows
 
 ### Arrows To Be Implemented (TODO):
 - Hammerhead Arrows (adapt normal arrows, but bludgeoning damage)
@@ -75,11 +83,7 @@ Many of these are too large to import directly into discord. Instead, to to the 
 - Fire Arrows (adapt magefire arrows)
 - Concussion Arrows
 - Poisoncloud Arrows
-- Explosive Arrows
-- Thunderclap Arrows
 - Lightning Arrows
-- Holy Arrows
 - Unholy Arrows
-- Acid Arrows
 
 

@@ -11,8 +11,8 @@ automation:
     value: 8 + proficiencyBonus + dexterityMod
   - type: condition
     condition: not choice or choice == "" or choice == " " or choice.lower() not in
-      "healing magefire rope blind blinding smoke smoking ice mind piercer mind
-      piercing glue"
+      "explosive thunderclap acid holy healing magefire rope blind blinding
+      smoke smoking ice mind piercer mind piercing glue"
     onTrue:
       - type: counter
         counter: Arrows
@@ -183,14 +183,21 @@ automation:
                 fail:
                   - type: ieffect2
                     name: Hit by glue arrow
+                    duration: null
                     effects:
                       save_dis:
                         - str
                         - dex
-                    parent: parentGlueArrow
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
                     desc: >-
                       Covered in sticky glue!
                        - Has disadvantage on Strength and Dexterity saving throws until the end of {name}'s next turn.
+                    stacking: false
+                    save_as: null
+                    parent: parentGlueArrow
                 success: []
                 dc: arrowDC
         onFalse: []
@@ -455,5 +462,162 @@ automation:
         title: Effect
     onFalse: []
     errorBehaviour: "false"
+  - type: condition
+    condition: choice and choice.lower() in "explosive"
+    onTrue:
+      - type: counter
+        counter: Explosive Arrows
+        amount: "1"
+        errorBehaviour: raise
+      - type: roll
+        dice: 2d10
+        name: damage
+      - type: target
+        target: all
+        effects:
+          - type: save
+            stat: dex
+            fail:
+              - type: damage
+                damage: "{damage}[fire]"
+            success: []
+            dc: arrowDC
+      - type: text
+        text: >-
+          **Explosive Arrow.** These arrows explode on hit. All creatures within a
+          10ft radius must make a Dexterity saving throw against your Arrow DC
+          (DC {{arrowDC}}) or take 2d10 fire damage. Ignites flammable objects
+          in the area that aren't being worn or carried.
+
+
+          *Destroyed on use.*
+    onFalse: []
+  - type: condition
+    condition: choice and choice.lower() in "thunderclap"
+    onTrue:
+      - type: counter
+        counter: Thunderclap Arrows
+        amount: "1"
+        errorBehaviour: raise
+      - type: roll
+        dice: 2d8
+        name: damage
+      - type: target
+        target: all
+        effects:
+          - type: save
+            stat: con
+            fail:
+              - type: damage
+                damage: "{damage}[thunder]"
+              - type: ieffect2
+                name: Prone
+                effects:
+                  attack_advantage: "-1"
+                desc: A prone creature's only movement option is to crawl, unless it stands up
+                  and thereby ends the condition
+                buttons:
+                  - label: Stand Up
+                    verb: stands up
+                    automation:
+                      - type: remove_ieffect
+            success: []
+            dc: arrowDC
+      - type: text
+        text: >-
+          These arrows release a thunderous ex-plosion on hit. All creatures within
+          a 10ft radius must make a Constitution saving throw against your Arrow
+          DC (DC {{arrowDC}}) or take 2d8 thunder damage, are pushed back 5ft
+          and fall prone. Loose objects are automatically pushed 5ft away.
+
+
+          *Destroyed on use.*
+    onFalse: []
+  - type: condition
+    condition: choice and choice.lower() in "holy"
+    onTrue:
+      - type: counter
+        counter: Holy Arrows
+        amount: "1"
+        errorBehaviour: raise
+      - type: target
+        target: all
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [radiant]
+              - type: save
+                stat: wis
+                fail:
+                  - type: ieffect2
+                    name: Frightened of {{name}} [Holy Arrow]
+                    effects:
+                      attack_advantage: "-1"
+                      check_dis:
+                        - all
+                    desc: >-
+                      Frightened of {{name}}. 
+                       - A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.
+                       - The creature can't willingly move closer to the source of its fear.
+                       - This effect ends if the creature ends its turn in a location where it doesn't have line of sight to you.
+                    buttons:
+                      - label: End Fear
+                        automation:
+                          - type: remove_ieffect
+                        verb: resists fear
+                        style: "1"
+                    duration: "10"
+                    end: true
+                success: []
+                dc: arrowDC
+            miss: []
+            attackBonus: baseHit
+      - type: text
+        text: >-
+          **Holy Arrows.** These arrows shine with a holy brilliance. On hit, deals
+          Radiant damage. An evil-aligned target must pass a Wisdom saving throw
+          against your Arrow DC or be frightened of you for one minute. This
+          effect ends if the creature ends its turn in a location where it
+          doesn't have line of sight to you.
+
+
+          *Destroyed on use.*
+    onFalse: []
+  - type: condition
+    condition: choice and choice.lower() in "acid"
+    onTrue:
+      - type: counter
+        counter: Acid Arrows
+        amount: "1"
+        errorBehaviour: raise
+      - type: target
+        target: all
+        effects:
+          - type: attack
+            hit:
+              - type: damage
+                damage: 1d6 + {damageBonus} [acid]
+              - type: save
+                stat: con
+                fail:
+                  - type: ieffect2
+                    name: Damaged Armor [Acid Arrow]
+                    stacking: true
+                    effects:
+                      ac_bonus: "-2"
+                success: []
+                dc: arrowDC
+            miss: []
+            attackBonus: baseHit
+      - type: text
+        text: >-
+          **Acid Arrows.** On hit Acid splashes from a capsule that shatters on
+          impact. The target must make a Constitution saving throw against your
+          Arrow DC (DC {{arrowDC}}) or have their AC reduced by 2.
+
+
+          *Destroyed on use.*
+    onFalse: []
 _v: 2
 activation_type: 2

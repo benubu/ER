@@ -1,0 +1,51 @@
+#Thunderclap
+#Ammunition, common
+#50 gp, 1 lb.
+#Damage: 2d6 Magical Thunder (no base damage)
+#Description
+#These arrows release a thunderous ex- plosion on hit. All creatures within a 10ft radius must make a Constitution saving throw against your Arrow DC or take 2d8 thunder damage, are pushed back 5ft #and fall prone. Loose objects are automatically pushed 5ft away.
+
+
+name: Thunderclap Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Thunderclap Arrows
+    amount: "1"
+    errorBehaviour: raise
+  - type: roll
+    dice: 2d8
+    name: damage
+  - type: target
+    target: all
+    effects:
+      - type: save
+        stat: con
+        fail:
+          - type: damage
+            damage: "{damage}[thunder]"
+          - type: ieffect2
+            name: Prone
+            effects:
+              attack_advantage: "-1"
+            desc: A prone creature's only movement option is to crawl, unless it stands up
+              and thereby ends the condition
+            buttons:
+              - label: Stand Up
+                verb: stands up
+                automation:
+                  - type: remove_ieffect
+        success: []
+        dc: arrowDC
+  - type: text
+    text: >-
+      These arrows release a thunderous ex-plosion on hit. All creatures within
+      a 10ft radius must make a Constitution saving throw against your Arrow
+      DC (DC {{arrowDC}}) or take 2d8 thunder damage, are pushed back 5ft
+      and fall prone. Loose objects are automatically pushed 5ft away.
+
+
+      *Destroyed on use.*
+_v: 2

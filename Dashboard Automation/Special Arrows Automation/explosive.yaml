@@ -1,0 +1,40 @@
+#Explosive Arrows
+#Ammunition, common
+#50 gp, 0.1 lb.
+#Damage: 2d10 Magical Fire (no base damage)
+#Description
+#These arrows explode on hit. All creatures within a 10ft radius must make a Dexterity saving throw against your Arrow DC or take 2d10 fire damage. Ignites flammable objects in the area that aren't #being worn or carried.
+
+
+name: Explosive Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Explosive Arrows
+    amount: "1"
+    errorBehaviour: raise
+  - type: roll
+    dice: 2d10
+    name: damage
+  - type: target
+    target: all
+    effects:
+      - type: save
+        stat: dex
+        fail:
+          - type: damage
+            damage: "{damage}[fire]"
+        success: []
+        dc: arrowDC
+  - type: text
+    text: >-
+      **Explosive Arrow.** These arrows explode on hit. All creatures within a
+      10ft radius must make a Dexterity saving throw against your Arrow DC
+      (DC {{arrowDC}}) or take 2d10 fire damage. Ignites flammable objects
+      in the area that aren't being worn or carried.
+
+
+      *Destroyed on use.*
+_v: 2

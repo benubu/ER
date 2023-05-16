@@ -1,0 +1,62 @@
+# Holy Arrows
+# Ammunition, common
+# 50 gp, 1 lb.
+# Damage: Radiant
+# Description
+# These arrows shine with a holy brilliance.
+# On hit, deals Radiant damage. An evil-aligned target must pass a Wisdom saving throw against your Arrow DC or be frightened of you for one minute. This effect ends if the creature ends its turn in # a location where it doesn't have line of sight to you.
+
+
+name: Holy Arrow
+automation:
+  - type: variable
+    name: arrowDC
+    value: 8 + proficiencyBonus + dexterityMod
+  - type: counter
+    counter: Holy Arrows
+    amount: "1"
+    errorBehaviour: raise
+  - type: target
+    target: all
+    effects:
+      - type: attack
+        hit:
+          - type: damage
+            damage: 1d6 + {dexterityMod} + 1 [magical piercing] + 1d6 [radiant]
+          - type: save
+            stat: wis
+            fail:
+              - type: ieffect2
+                name: Frightened of {{name}} [Holy Arrow]
+                effects:
+                  attack_advantage: "-1"
+                  check_dis:
+                    - all
+                desc: >-
+                  Frightened of {{name}}. 
+                   - A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.
+                   - The creature can't willingly move closer to the source of its fear.
+                   - This effect ends if the creature ends its turn in a location where it doesn't have line of sight to you.
+                buttons:
+                  - label: End Fear
+                    automation:
+                      - type: remove_ieffect
+                    verb: resists fear
+                    style: "1"
+                duration: "10"
+                end: true
+            success: []
+            dc: arrowDC
+        miss: []
+        attackBonus: (dexterityMod+proficiencyBonus) + 1
+  - type: text
+    text: >-
+      **Holy Arrows.** These arrows shine with a holy brilliance. On hit, deals
+      Radiant damage. An evil-aligned target must pass a Wisdom saving throw
+      against your Arrow DC or be frightened of you for one minute. This
+      effect ends if the creature ends its turn in a location where it
+      doesn't have line of sight to you.
+
+
+      *Destroyed on use.*
+_v: 2
