@@ -21,8 +21,6 @@ automation:
     effects:
       - type: attack
         hit:
-          - type: damage
-            damage: 1d6 + {dexterityMod} + 1 [magical piercing] + 1d6 [radiant]
           - type: save
             stat: wis
             fail:

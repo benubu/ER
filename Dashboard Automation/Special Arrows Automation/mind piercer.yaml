@@ -22,10 +22,7 @@ automation:
     target: all
     effects:
       - type: attack
-        hit:
-          - type: damage
-            damage: 1d6 + {dexterityMod} + 1 [psychic]
-            overheal: false
+        hit: []
         miss: []
         attackBonus: (dexterityMod+proficiencyBonus) + 1
   - type: condition

@@ -1,4 +1,4 @@
-name: +1 Shortbow
+name: Feywild's Chance
 automation:
   - type: variable
     name: baseHit
@@ -11,8 +11,8 @@ automation:
     value: 8 + proficiencyBonus + dexterityMod
   - type: condition
     condition: not choice or choice == "" or choice == " " or choice.lower() not in
-      "explosive thunderclap acid holy healing magefire rope blind blinding
-      smoke smoking ice mind piercer mind piercing glue"
+      "explosive thunderclap acid holy healing magefire rope blinding smoke
+      smoking ice mind piercer mind piercing glue"
     onTrue:
       - type: counter
         counter: Arrows
@@ -66,7 +66,7 @@ automation:
     onFalse: []
     errorBehaviour: "false"
   - type: condition
-    condition: choice and choice.lower() in "blinding blind"
+    condition: choice and choice.lower() in "blinding"
     onTrue:
       - type: counter
         counter: Blinding Arrows
@@ -227,10 +227,7 @@ automation:
         target: all
         effects:
           - type: attack
-            hit:
-              - type: damage
-                damage: 1d6 + {damageBonus} [cold]
-                overheal: false
+            hit: []
             miss: []
             attackBonus: baseHit
       - type: text
@@ -294,10 +291,7 @@ automation:
         target: all
         effects:
           - type: attack
-            hit:
-              - type: damage
-                damage: 1d6 + {damageBonus} [psychic]
-                overheal: false
+            hit: []
             miss: []
             attackBonus: baseHit
       - type: condition
@@ -468,10 +462,12 @@ automation:
       - type: counter
         counter: Explosive Arrows
         amount: "1"
+        allowOverflow: false
         errorBehaviour: raise
       - type: roll
         dice: 2d10
         name: damage
+        hidden: false
       - type: target
         target: all
         effects:
@@ -480,6 +476,7 @@ automation:
             fail:
               - type: damage
                 damage: "{damage}[fire]"
+                overheal: false
             success: []
             dc: arrowDC
       - type: text
@@ -491,17 +488,21 @@ automation:
 
 
           *Destroyed on use.*
+        title: Effect
     onFalse: []
+    errorBehaviour: "false"
   - type: condition
     condition: choice and choice.lower() in "thunderclap"
     onTrue:
       - type: counter
         counter: Thunderclap Arrows
         amount: "1"
+        allowOverflow: false
         errorBehaviour: raise
       - type: roll
         dice: 2d8
         name: damage
+        hidden: false
       - type: target
         target: all
         effects:
@@ -510,17 +511,29 @@ automation:
             fail:
               - type: damage
                 damage: "{damage}[thunder]"
+                overheal: false
               - type: ieffect2
                 name: Prone
+                duration: null
                 effects:
                   attack_advantage: "-1"
-                desc: A prone creature's only movement option is to crawl, unless it stands up
-                  and thereby ends the condition
+                attacks: []
                 buttons:
                   - label: Stand Up
-                    verb: stands up
                     automation:
                       - type: remove_ieffect
+                    verb: stands up
+                    style: null
+                    defaultDC: null
+                    defaultAttackBonus: null
+                    defaultCastingMod: null
+                end: false
+                conc: false
+                desc: A prone creature's only movement option is to crawl, unless it stands up
+                  and thereby ends the condition
+                stacking: false
+                save_as: null
+                parent: null
             success: []
             dc: arrowDC
       - type: text
@@ -532,43 +545,52 @@ automation:
 
 
           *Destroyed on use.*
+        title: Effect
     onFalse: []
+    errorBehaviour: "false"
   - type: condition
     condition: choice and choice.lower() in "holy"
     onTrue:
       - type: counter
         counter: Holy Arrows
         amount: "1"
+        allowOverflow: false
         errorBehaviour: raise
       - type: target
         target: all
         effects:
           - type: attack
             hit:
-              - type: damage
-                damage: 1d6 + {damageBonus} [radiant]
               - type: save
                 stat: wis
                 fail:
                   - type: ieffect2
                     name: Frightened of {{name}} [Holy Arrow]
+                    duration: "10"
                     effects:
                       attack_advantage: "-1"
                       check_dis:
                         - all
-                    desc: >-
-                      Frightened of {{name}}. 
-                       - A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.
-                       - The creature can't willingly move closer to the source of its fear.
-                       - This effect ends if the creature ends its turn in a location where it doesn't have line of sight to you.
+                    attacks: []
                     buttons:
                       - label: End Fear
                         automation:
                           - type: remove_ieffect
                         verb: resists fear
                         style: "1"
-                    duration: "10"
+                        defaultDC: null
+                        defaultAttackBonus: null
+                        defaultCastingMod: null
                     end: true
+                    conc: false
+                    desc: >-
+                      Frightened of {{name}}. 
+                       - A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.
+                       - The creature can't willingly move closer to the source of its fear.
+                       - This effect ends if the creature ends its turn in a location where it doesn't have line of sight to you.
+                    stacking: false
+                    save_as: null
+                    parent: null
                 success: []
                 dc: arrowDC
             miss: []
@@ -583,29 +605,38 @@ automation:
 
 
           *Destroyed on use.*
+        title: Effect
     onFalse: []
+    errorBehaviour: "false"
   - type: condition
     condition: choice and choice.lower() in "acid"
     onTrue:
       - type: counter
         counter: Acid Arrows
         amount: "1"
+        allowOverflow: false
         errorBehaviour: raise
       - type: target
         target: all
         effects:
           - type: attack
             hit:
-              - type: damage
-                damage: 1d6 + {damageBonus} [acid]
               - type: save
                 stat: con
                 fail:
                   - type: ieffect2
                     name: Damaged Armor [Acid Arrow]
-                    stacking: true
+                    duration: null
                     effects:
                       ac_bonus: "-2"
+                    attacks: []
+                    buttons: []
+                    end: false
+                    conc: false
+                    desc: null
+                    stacking: true
+                    save_as: null
+                    parent: null
                 success: []
                 dc: arrowDC
             miss: []
@@ -618,6 +649,10 @@ automation:
 
 
           *Destroyed on use.*
+        title: Effect
     onFalse: []
+    errorBehaviour: "false"
 _v: 2
-activation_type: 2
+proper: true
+phrase: Shortbow +1
+thumb: https://cdn.discordapp.com/attachments/905609714296045638/1108109799356370995/magic_bow.jpg
