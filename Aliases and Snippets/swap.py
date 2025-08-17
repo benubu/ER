@@ -32,7 +32,7 @@ def resolve_one(q):
     if len(subs) == 1:
         return subs[0]
     if len(subs) > 1:
-        err(f'Ambiguous "{q}". Matches: ' + ", ".join(x.name for x in subs[:10]) + ". Be more specific or use `-t`.")
+        err(f'Ambiguous "{q}". Matches: ' + ", ".join(x.name for x in subs[:10]) + ". Be more specific.")
     err(f'No combatant found matching "{q}".')
 
 A = resolve_one(names[0])
