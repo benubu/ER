@@ -19,7 +19,7 @@ if len(names) < 2:
     if len(argv) >= 2:
         names = [argv[0], argv[1]]
     else:
-        err("Please specify two combatants. Example: `!swap -t Goblin -t Knight` or `!swap Goblin Knight`")
+        err("Please specify two combatants. Example: `!swap Goblin Knight`")
 
 def resolve_one(q):
     ql = q.lower()
