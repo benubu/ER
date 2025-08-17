@@ -53,28 +53,43 @@ def parse_note(note):
     return data, order, note
 
 def rebuild_note(orig_note, data, order):
-    case_map = {kl: kor for kl, kor in order}
-    seen, out = set(), []
+    # Keys we actively manage in the note
+    controlled = {"location": "Location", "height": "Height"}
+    case_map = {kl: korig for kl, korig in order}
+
+    new_parts, seen = [], set()
     for p in (orig_note or "").split(" | "):
         if ": " not in p:
             continue
         k_orig, _ = p.split(": ", 1)
         kl = k_orig.strip().lower()
-        if kl in data:
-            label = "Location" if kl == "location" else "Height" if kl == "height" else case_map.get(kl, k_orig.strip())
-            out.append(f"{label}: {data[kl]}")
-            seen.add(kl)
+
+        if kl in controlled:
+            # For controlled keys, ONLY keep what's in `data`.
+            if kl in data:
+                label = controlled[kl]
+                new_parts.append(f"{label}: {data[kl]}")
+                seen.add(kl)
+            # else: skip -> effectively deletes it
         else:
-            out.append(p.strip())
-    for kl, label in (("location","Location"), ("height","Height")):
+            # Preserve unrelated keys as-is
+            new_parts.append(p.strip())
+
+    # Add any controlled keys present in data but not yet written
+    for kl, label in controlled.items():
         if kl in data and kl not in seen:
-            out.append(f"{label}: {data[kl]}")
+            new_parts.append(f"{label}: {data[kl]}")
             seen.add(kl)
+
+    # Add any brand-new, non-controlled keys in data
     for kl, v in data.items():
-        if kl not in seen:
-            out.append(f"{kl.title()}: {v}")
+        if kl not in seen and kl not in controlled:
+            # Prefer original casing if it ever existed
+            label = next((kor for kll, kor in order if kll == kl), kl.title())
+            new_parts.append(f"{label}: {v}")
             seen.add(kl)
-    return " | ".join([p for p in out if p])
+
+    return " | ".join([p for p in new_parts if p])
 
 Ak, Aord, Anote = parse_note(A.note)
 Bk, Bord, Bnote = parse_note(B.note)
